@@ -1,9 +1,10 @@
 import { Request, response, Response } from "express";
-import { QueryConfig } from "pg";
+import { QueryConfig, QueryResult } from "pg";
 import format from "pg-format";
 import { client } from "../database";
 import {
   iDeveloperRequest,
+  iDevInfoRequest,
   iDevResult,
 } from "../interfaces/developer.interfaces";
 
@@ -91,4 +92,44 @@ export const listDev = async (
     return response.status(404).json({ message: "Developer not found" });
   }
   return response.json(queryResult);
+};
+
+export const createDevInfo = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const id: number = parseInt(request.params.id);
+  const devInfoRequest: iDevInfoRequest = request.devInfo;
+
+  const queryString: string = format(
+    `
+    INSERT INTO
+        developers_infos(%I)
+    VALUES
+        (%L)
+    RETURNING *;
+    `,
+    Object.keys(devInfoRequest),
+    Object.values(devInfoRequest)
+  );
+
+  const queryResult: iDevResult = await client.query(queryString);
+
+  const infoID = queryResult.rows[0].id;
+
+  const queryTemp: string = `
+    UPDATE
+        developers
+    SET
+        (%I) = ROW(%L)
+    WHERE 
+        developers."id" = $1
+    RETURNING *;
+`;
+
+  const queryFormat: string = format(queryTemp, "developers_infoID", infoID);
+  const queryConfig: QueryConfig = { text: queryFormat, values: [id] };
+  const updateDev: iDevResult = await client.query(queryConfig);
+
+  return response.status(201).json(queryResult.rows[0]);
 };

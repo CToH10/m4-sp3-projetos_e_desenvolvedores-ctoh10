@@ -26,6 +26,13 @@ export const checkDeveloperKeys = (
       .json({ message: `Required keys are: ${joinedKeys}` });
   }
 
+  const emailValidation: boolean =
+    request.body.email.includes("@") && request.body.email.includes(".com");
+
+  if (!emailValidation) {
+    return response.status(400).json({ message: `Invalid email format` });
+  }
+
   return next();
 };
 

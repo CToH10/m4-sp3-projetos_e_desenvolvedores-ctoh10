@@ -5,7 +5,7 @@ CREATE TYPE "OS" AS ENUM ('Windows', 'MacOS', 'Linux');
 CREATE TABLE IF NOT EXISTS developers_infos(
     "id" SERIAL PRIMARY KEY,
     "developerSince" DATE NOT NULL,
-    "preferredOS" OS NOT NULL
+    "preferredOS" "OS" NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS developers(

@@ -45,4 +45,4 @@ ALTER TABLE developers
 ADD "developers_infoID" INTEGER UNIQUE; 
 
 ALTER TABLE developers
-ADD FOREIGN KEY ("developers_infoID" ) REFERENCES developers_infos("id");
+ADD FOREIGN KEY ("developers_infoID" ) REFERENCES developers_infos("id") ON DELETE SET NULL;

@@ -22,7 +22,7 @@ export const checkDeveloperKeys = (
 
   if (!allRequired) {
     return response
-      .status(400)
+      .status(409)
       .json({ message: `Required keys are: ${joinedKeys}` });
   }
 
@@ -32,6 +32,8 @@ export const checkDeveloperKeys = (
   if (!emailValidation) {
     return response.status(400).json({ message: `Invalid email format` });
   }
+
+  request.dev = { name: request.body.name, email: request.body.email };
 
   return next();
 };

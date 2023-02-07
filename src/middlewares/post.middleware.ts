@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { iDevRequiredKeys } from "../interfaces/developer.interfaces";
+import { QueryConfig } from "pg";
+import { client } from "../database";
+import {
+  iDevRequiredKeys,
+  iDevResult,
+} from "../interfaces/developer.interfaces";
 
 export const checkDeveloperKeys = (
   request: Request,
@@ -22,4 +27,33 @@ export const checkDeveloperKeys = (
   }
 
   return next();
+};
+
+export const emailAlreadyInUse = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  const queryString: string = `
+  SELECT
+  *
+  FROM
+  developers
+  WHERE
+  email=$1`;
+
+  const queryConfig: QueryConfig = {
+    text: queryString,
+    values: [request.body.email],
+  };
+
+  const queryResult: iDevResult = await client.query(queryConfig);
+
+  if (queryResult.rowCount === 0) {
+    return next();
+  }
+
+  return response
+    .status(400)
+    .json({ message: `${request.body.email} already in use` });
 };

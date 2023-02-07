@@ -39,3 +39,10 @@ INSERT INTO
     technologies("name")
 VALUES
    ('JavaScript'), ('Python'), ('React'), ('Express.js'), ('HTML'), ('CSS'), ('Django'), ('PostgreSQL'), ('MongoDB');
+
+
+ALTER TABLE developers
+ADD "developers_infoID" INTEGER UNIQUE; 
+
+ALTER TABLE developers
+ADD FOREIGN KEY ("developers_infoID" ) REFERENCES developers_infos("id");

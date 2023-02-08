@@ -9,6 +9,7 @@ import {
 import { startDatabase } from "../src/database/index";
 import {
   createDeveloper,
+  deleteDev,
   listAllDevs,
   listDev,
   updateDev,
@@ -48,6 +49,7 @@ app.patch(
   checkUpdateInfoKeys,
   updateDevInfo
 );
+app.delete("/developers/:id", checkDevExists, deleteDev);
 
 const port: number = 3000;
 const message: string = `Server is running on: http://localhost:${port}`;

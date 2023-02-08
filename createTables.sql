@@ -5,7 +5,7 @@ CREATE TYPE "OS" AS ENUM ('Windows', 'MacOS', 'Linux');
 CREATE TABLE IF NOT EXISTS developers_infos(
     "id" SERIAL PRIMARY KEY,
     "developerSince" DATE NOT NULL,
-    "preferredOS" OS NOT NULL
+    "preferredOS" "OS" NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS developers(
@@ -42,7 +42,15 @@ VALUES
 
 
 ALTER TABLE developers
-ADD "developers_infoID" INTEGER UNIQUE; 
+ADD "developers_infoID" INTEGER UNIQUE DEFAULT NULL; 
 
 ALTER TABLE developers
 ADD FOREIGN KEY ("developers_infoID" ) REFERENCES developers_infos("id") ON DELETE SET NULL;
+
+ALTER TABLE developers_infos
+ADD "devID" INTEGER UNIQUE DEFAULT NULL; 
+
+ALTER TABLE developers_infos
+ADD FOREIGN KEY ("devID" ) REFERENCES developers("id") ON DELETE CASCADE;
+
+// TEM QUE MUDAR TUDO AQUI, VER O QUE FAZER COM A DESGRAÇA DESSA CHAVE ESTRANGEIRA DO CARALHO

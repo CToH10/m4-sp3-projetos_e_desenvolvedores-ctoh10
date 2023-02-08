@@ -15,6 +15,7 @@ export type OS = "Windows" | "Linux" | "MacOS";
 export interface iDevInfoRequest {
   developerSince: Date;
   preferredOS: OS;
+  devID: number;
 }
 
 export interface iDevInfo extends iDevInfoRequest {

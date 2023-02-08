@@ -99,7 +99,7 @@ export const createDevInfo = async (
   response: Response
 ): Promise<Response> => {
   const id: number = parseInt(request.params.id);
-  const devInfoRequest: iDevInfoRequest = request.devInfo;
+  const devInfoRequest: iDevInfoRequest = { ...request.devInfo, devID: id };
 
   const queryString: string = format(
     `

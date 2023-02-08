@@ -7,6 +7,7 @@ declare global {
       dev: { name: string; email: string };
       devUpdate: Partial<dev>;
       devInfo: { preferredOS: OS; developerSince: Date };
+      devUpdateInfo: Partial<devInfo>;
     }
   }
 }

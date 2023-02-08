@@ -9,12 +9,15 @@ import {
 import { startDatabase } from "../src/database/index";
 import {
   createDeveloper,
-  createDevInfo,
   listAllDevs,
   listDev,
   updateDev,
 } from "../src/logic/developers.logic";
-import { checkUpdateDevKeys } from "../src/middlewares/patch.middlewares";
+import { createDevInfo } from "../src/logic/devInfo.logic";
+import {
+  checkUpdateDevKeys,
+  checkUpdateInfoKeys,
+} from "../src/middlewares/patch.middlewares";
 
 const app: Application = express();
 
@@ -37,6 +40,7 @@ app.patch(
   emailAlreadyInUse,
   updateDev
 );
+app.patch("/developers/:id/infos", checkDevExists, checkUpdateInfoKeys);
 
 const port: number = 3000;
 const message: string = `Server is running on: http://localhost:${port}`;

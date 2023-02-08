@@ -164,4 +164,6 @@ export const checkDevHasInfo = async (
       .status(409)
       .json({ message: `Developer already has info. You can update it` });
   }
+
+  return next();
 };

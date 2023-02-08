@@ -20,11 +20,11 @@ import {
   checkUpdateDevKeys,
   checkUpdateInfoKeys,
 } from "./middlewares/patchDev.middlewares";
-
 import {
   checkProjDev,
   checkProjKeys,
 } from "./middlewares/postProject.middlewares";
+import { createProject } from "./logic/project.logic";
 
 const app: Application = express();
 
@@ -56,7 +56,7 @@ app.patch(
 );
 app.delete("/developers/:id", checkDevExists, deleteDev);
 
-app.post("/projects", checkProjDev, checkProjKeys);
+app.post("/projects", checkProjDev, checkProjKeys, createProject);
 
 const port: number = 3000;
 const message: string = `Server is running on: http://localhost:${port}`;

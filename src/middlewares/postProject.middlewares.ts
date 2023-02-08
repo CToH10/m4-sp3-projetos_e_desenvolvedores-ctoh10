@@ -47,8 +47,8 @@ export const checkProjKeys = (
         estimatedTime: estimatedTime,
         name: name,
         repository: repository,
-        startDate: startDate,
-        endDate: endDate,
+        startDate: new Date(`${startDate} GMT`),
+        endDate: new Date(`${endDate} GMT`),
       }
     : {
         description: description,
@@ -56,7 +56,7 @@ export const checkProjKeys = (
         estimatedTime: estimatedTime,
         name: name,
         repository: repository,
-        startDate: startDate,
+        startDate: new Date(`${startDate} GMT`),
       };
 
   return next();

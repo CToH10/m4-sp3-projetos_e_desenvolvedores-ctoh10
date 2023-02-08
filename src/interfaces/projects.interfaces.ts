@@ -1,3 +1,5 @@
+import { QueryResult } from "pg";
+
 export interface iProjRequest {
   name: string;
   description: string;
@@ -15,3 +17,5 @@ export type iRequiredProjKeys =
   | "repository"
   | "startDate"
   | "developerId";
+
+export type ProjResult = QueryResult<iProjRequest>;

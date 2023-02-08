@@ -65,7 +65,7 @@ export const checkUpdateInfoKeys = (
 
   if (developerSince) {
     request.devUpdateInfo = {
-      ...request.dev,
+      ...request.devUpdateInfo,
       developerSince: new Date(`${developerSince} GMT`),
     };
   }

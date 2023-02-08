@@ -13,7 +13,7 @@ import {
   listDev,
   updateDev,
 } from "../src/logic/developers.logic";
-import { createDevInfo } from "../src/logic/devInfo.logic";
+import { createDevInfo, updateDevInfo } from "../src/logic/devInfo.logic";
 import {
   checkUpdateDevKeys,
   checkUpdateInfoKeys,
@@ -40,7 +40,12 @@ app.patch(
   emailAlreadyInUse,
   updateDev
 );
-app.patch("/developers/:id/infos", checkDevExists, checkUpdateInfoKeys);
+app.patch(
+  "/developers/:id/infos",
+  checkDevExists,
+  checkUpdateInfoKeys,
+  updateDevInfo
+);
 
 const port: number = 3000;
 const message: string = `Server is running on: http://localhost:${port}`;

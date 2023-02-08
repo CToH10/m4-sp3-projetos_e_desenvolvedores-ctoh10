@@ -4,6 +4,7 @@ import format from "pg-format";
 import { client } from "../database";
 import {
   iDevInfoRequest,
+  iDevInfoResult,
   iDevResult,
 } from "../interfaces/developer.interfaces";
 
@@ -45,4 +46,30 @@ export const createDevInfo = async (
   const updateDev: iDevResult = await client.query(queryConfig);
 
   return response.status(201).json(queryResult.rows[0]);
+};
+
+export const updateDevInfo = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const id: number = parseInt(request.params.id);
+  const devInfoKeys = Object.keys(request.devUpdateInfo);
+  const devInfoValues = Object.values(request.devUpdateInfo);
+  console.log(devInfoValues);
+
+  const queryTemp: string = `
+      UPDATE
+          developers_infos
+      SET
+          (%I) = ROW(%L)
+      WHERE 
+      developers_infos."devID" = $1
+      RETURNING *;
+  `;
+
+  const queryFormat: string = format(queryTemp, devInfoKeys, devInfoValues);
+  const queryConfig: QueryConfig = { text: queryFormat, values: [id] };
+  const updateDevInfo: iDevInfoResult = await client.query(queryConfig);
+
+  return response.status(201).json(updateDevInfo.rows[0]);
 };

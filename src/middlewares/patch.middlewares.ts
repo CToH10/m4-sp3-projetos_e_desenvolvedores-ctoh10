@@ -1,5 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { iDevInfoRequiredKeys, OS } from "../interfaces/developer.interfaces";
+import { QueryConfig } from "pg";
+import { client } from "../database";
+import {
+  iDevInfoRequiredKeys,
+  iDevResult,
+  OS,
+} from "../interfaces/developer.interfaces";
 
 export const checkUpdateDevKeys = (
   request: Request,
@@ -68,6 +74,36 @@ export const checkUpdateInfoKeys = (
       ...request.devUpdateInfo,
       developerSince: new Date(`${developerSince} GMT`),
     };
+  }
+
+  return next();
+};
+
+export const checkDevHasNoInfo = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  const id: number = parseInt(request.params.id);
+  const queryString: string = `
+  SELECT
+  *
+  FROM
+  developers
+  WHERE
+  id=$1`;
+
+  const queryConfig: QueryConfig = {
+    text: queryString,
+    values: [id],
+  };
+
+  const queryResult: iDevResult = await client.query(queryConfig);
+
+  if (!queryResult.rows[0].developers_infoID) {
+    return response.status(400).json({
+      message: `Developer has no info. You need to create it`,
+    });
   }
 
   return next();

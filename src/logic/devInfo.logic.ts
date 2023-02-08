@@ -55,7 +55,6 @@ export const updateDevInfo = async (
   const id: number = parseInt(request.params.id);
   const devInfoKeys = Object.keys(request.devUpdateInfo);
   const devInfoValues = Object.values(request.devUpdateInfo);
-  console.log(devInfoValues);
 
   const queryTemp: string = `
       UPDATE

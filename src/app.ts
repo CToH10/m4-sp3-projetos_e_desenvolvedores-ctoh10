@@ -15,6 +15,7 @@ import {
 } from "../src/logic/developers.logic";
 import { createDevInfo, updateDevInfo } from "../src/logic/devInfo.logic";
 import {
+  checkDevHasNoInfo,
   checkUpdateDevKeys,
   checkUpdateInfoKeys,
 } from "../src/middlewares/patch.middlewares";
@@ -43,6 +44,7 @@ app.patch(
 app.patch(
   "/developers/:id/infos",
   checkDevExists,
+  checkDevHasNoInfo,
   checkUpdateInfoKeys,
   updateDevInfo
 );

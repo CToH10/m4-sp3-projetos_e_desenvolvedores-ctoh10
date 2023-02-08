@@ -133,3 +133,29 @@ export const createDevInfo = async (
 
   return response.status(201).json(queryResult.rows[0]);
 };
+
+export const updateDev = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const id: number = parseInt(request.params.id);
+  const devKeys = Object.keys(request.devUpdate);
+  const devValues = Object.values(request.devUpdate);
+
+  const queryTemp: string = `
+    UPDATE
+        developers
+    SET
+        (%I) = ROW(%L)
+    WHERE 
+        developers."id" = $1
+    RETURNING *;
+`;
+
+  const queryFormat: string = format(queryTemp, devKeys, devValues);
+  const queryConfig: QueryConfig = { text: queryFormat, values: [id] };
+
+  const queryResult: iDevResult = await client.query(queryConfig);
+
+  return response.json(queryResult.rows[0]);
+};

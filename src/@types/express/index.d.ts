@@ -5,6 +5,7 @@ declare global {
   namespace Express {
     interface Request {
       dev: { name: string; email: string };
+      devUpdate: Partial<dev>;
       devInfo: { preferredOS: OS; developerSince: Date };
     }
   }

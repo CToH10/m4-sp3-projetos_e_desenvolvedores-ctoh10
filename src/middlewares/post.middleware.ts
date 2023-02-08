@@ -74,7 +74,6 @@ export const checkInfoKeys = (
   response: Response,
   next: NextFunction
 ): Response | void => {
-  const devId = parseInt(request.params.id);
   const infoKeys: string[] = Object.keys(request.body);
   const requiredKeys: iDevInfoRequiredKeys[] = [
     "developerSince",
@@ -136,11 +135,33 @@ export const checkDevExists = async (
     return response.status(404).json({ message: `Developer not found` });
   }
 
+  return next();
+};
+
+export const checkDevHasInfo = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  const id: number = parseInt(request.params.id);
+  const queryString: string = `
+  SELECT
+  *
+  FROM
+  developers
+  WHERE
+  id=$1`;
+
+  const queryConfig: QueryConfig = {
+    text: queryString,
+    values: [id],
+  };
+
+  const queryResult: iDevResult = await client.query(queryConfig);
+
   if (queryResult.rows[0].developers_infoID) {
     return response
       .status(409)
       .json({ message: `Developer already has info. You can update it` });
   }
-
-  return next();
 };

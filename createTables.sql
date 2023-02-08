@@ -53,15 +53,20 @@ ADD "devID" INTEGER UNIQUE NOT NULL;
 ALTER TABLE developers_infos
 ADD FOREIGN KEY ("devID" ) REFERENCES developers("id") ON DELETE CASCADE;
 
-
--- ALTER TABLE developers
--- ADD "projectID" INTEGER UNIQUE DEFAULT NULL; 
-
--- ALTER TABLE developers
--- ADD FOREIGN KEY ("projectID" ) REFERENCES projects("id") ON DELETE SET NULL;
-
 ALTER TABLE projects
 ADD "developerId" INTEGER NOT NULL;
 
 ALTER TABLE projects
 ADD FOREIGN KEY ("developerId") REFERENCES developers("id") ON DELETE CASCADE;
+
+ALTER TABLE projects_technologies
+ADD "projectID" INTEGER NOT NULL; 
+
+ALTER TABLE projects_technologies
+ADD FOREIGN KEY ("projectID" ) REFERENCES projects("id") ON DELETE CASCADE;
+
+ALTER TABLE projects_technologies
+ADD "techID" INTEGER NOT NULL;
+
+ALTER TABLE projects_technologies
+ADD FOREIGN KEY ("techID" ) REFERENCES projects("id") ON DELETE CASCADE;

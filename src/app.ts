@@ -12,6 +12,7 @@ import {
   deleteDev,
   listAllDevs,
   listDev,
+  listDevProjects,
   updateDev,
 } from "../src/logic/developers.logic";
 import { createDevInfo, updateDevInfo } from "../src/logic/devInfo.logic";
@@ -50,6 +51,7 @@ app.post(
 );
 app.get("/developers", listAllDevs);
 app.get("/developers/:id", listDev);
+app.get("/developers/:id/projects", listDevProjects);
 app.patch(
   "/developers/:id",
   checkDevExists,

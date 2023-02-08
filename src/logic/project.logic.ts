@@ -86,5 +86,24 @@ export const updateProject = async (
   request: Request,
   response: Response
 ): Promise<Response> => {
-  return response.json();
+  const id: number = parseInt(request.params.id);
+  const projKeys = Object.keys(request.projUp);
+  const projValues = Object.values(request.projUp);
+
+  const queryTemp: string = `
+    UPDATE
+        projects
+    SET
+        (%I) = ROW(%L)
+    WHERE 
+        projects."id" = $1
+    RETURNING *;
+`;
+
+  const queryFormat: string = format(queryTemp, projKeys, projValues);
+  const queryConfig: QueryConfig = { text: queryFormat, values: [id] };
+
+  const queryResult: ProjResult = await client.query(queryConfig);
+
+  return response.json(queryResult.rows[0]);
 };

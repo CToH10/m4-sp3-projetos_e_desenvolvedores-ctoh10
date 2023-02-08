@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { QueryConfig } from "pg";
 import { client } from "../database";
+import { iDevResult } from "../interfaces/developer.interfaces";
 import { iPossibleProjKeys } from "../interfaces/projects.interfaces";
 
 export const checkProjExists = async (
@@ -64,9 +65,29 @@ export const checkUpdateProjKeys = async (
   }
 
   if (request.body.developerId) {
+    const id: number = parseInt(request.body.developerId);
+    const queryString: string = `
+        SELECT
+            *
+        FROM
+            developers
+        WHERE
+            id=$1`;
+
+    const queryConfig: QueryConfig = {
+      text: queryString,
+      values: [id],
+    };
+
+    const queryResult: iDevResult = await client.query(queryConfig);
+
+    if (queryResult.rowCount === 0) {
+      return response.status(404).json({ message: `Developer not found` });
+    }
+
     request.projUp = {
       ...request.projUp,
-      developerId: request.body.developerId,
+      developerId: id,
     };
   }
 

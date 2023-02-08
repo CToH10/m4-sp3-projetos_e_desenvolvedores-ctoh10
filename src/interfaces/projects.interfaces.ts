@@ -18,4 +18,6 @@ export type iRequiredProjKeys =
   | "startDate"
   | "developerId";
 
+export type iPossibleProjKeys = iRequiredProjKeys | "endDate";
+
 export type ProjResult = QueryResult<iProjRequest>;

@@ -74,10 +74,17 @@ export const listAProj = async (
 
   const queryResult = await client.query(queryConfig);
 
-  if (queryResult.rows.length === 0) {
+  if (queryResult.rowCount === 0) {
     return response.status(404).json({
-      message: "Project not found",
+      message: "No projects found",
     });
   }
   return response.json(queryResult.rows);
+};
+
+export const updateProject = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  return response.json();
 };

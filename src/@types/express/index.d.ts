@@ -10,6 +10,7 @@ declare global {
       devInfo: { preferredOS: OS; developerSince: Date };
       devUpdateInfo: Partial<devInfo>;
       proj: iProjRequest;
+      projUp: Partial<iProjRequest>;
     }
   }
 }

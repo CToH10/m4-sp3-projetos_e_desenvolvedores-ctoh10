@@ -24,7 +24,16 @@ import {
   checkProjDev,
   checkProjKeys,
 } from "./middlewares/postProject.middlewares";
-import { createProject, listAllProjs, listAProj } from "./logic/project.logic";
+import {
+  checkProjExists,
+  checkUpdateProjKeys,
+} from "./middlewares/patchProject.middlewares";
+import {
+  createProject,
+  listAllProjs,
+  listAProj,
+  updateProject,
+} from "./logic/project.logic";
 
 const app: Application = express();
 
@@ -59,6 +68,7 @@ app.delete("/developers/:id", checkDevExists, deleteDev);
 app.post("/projects", checkProjDev, checkProjKeys, createProject);
 app.get("/projects", listAllProjs);
 app.get("/projects/:id", listAProj);
+app.patch("/projects/:id", checkProjExists, checkUpdateProjKeys, updateProject);
 
 const port: number = 3000;
 const message: string = `Server is running on: http://localhost:${port}`;

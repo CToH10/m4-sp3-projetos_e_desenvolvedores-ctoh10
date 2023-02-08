@@ -107,3 +107,25 @@ export const updateProject = async (
 
   return response.json(queryResult.rows[0]);
 };
+
+export const deleteProj = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const id: number = Number(request.params.id);
+
+  const queryTemp: string = `
+    DELETE FROM
+      projects
+    WHERE
+      id = $1
+  `;
+  const queryConfig: QueryConfig = {
+    text: queryTemp,
+    values: [id],
+  };
+
+  await client.query(queryConfig);
+
+  return response.status(204).json();
+};

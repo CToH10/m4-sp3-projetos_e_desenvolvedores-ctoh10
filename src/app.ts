@@ -30,6 +30,7 @@ import {
 } from "./middlewares/patchProject.middlewares";
 import {
   createProject,
+  deleteProj,
   listAllProjs,
   listAProj,
   updateProject,
@@ -69,6 +70,7 @@ app.post("/projects", checkProjDev, checkProjKeys, createProject);
 app.get("/projects", listAllProjs);
 app.get("/projects/:id", listAProj);
 app.patch("/projects/:id", checkProjExists, checkUpdateProjKeys, updateProject);
+app.delete("/projects/:id", checkProjExists, deleteProj);
 
 const port: number = 3000;
 const message: string = `Server is running on: http://localhost:${port}`;

@@ -5,7 +5,7 @@ import {
   checkDevHasInfo,
   checkInfoKeys,
   emailAlreadyInUse,
-} from "../src/middlewares/post.middleware";
+} from "./middlewares/postDev.middleware";
 import { startDatabase } from "../src/database/index";
 import {
   createDeveloper,
@@ -19,7 +19,12 @@ import {
   checkDevHasNoInfo,
   checkUpdateDevKeys,
   checkUpdateInfoKeys,
-} from "../src/middlewares/patch.middlewares";
+} from "./middlewares/patchDev.middlewares";
+
+import {
+  checkProjDev,
+  checkProjKeys,
+} from "./middlewares/postProject.middlewares";
 
 const app: Application = express();
 
@@ -50,6 +55,8 @@ app.patch(
   updateDevInfo
 );
 app.delete("/developers/:id", checkDevExists, deleteDev);
+
+app.post("/projects", checkProjDev, checkProjKeys);
 
 const port: number = 3000;
 const message: string = `Server is running on: http://localhost:${port}`;

@@ -1,5 +1,6 @@
 import express from "express";
 import { OS } from "../../interfaces/developer.interfaces";
+import { iProjRequest } from "../../interfaces/projects.interfaces";
 
 declare global {
   namespace Express {
@@ -8,6 +9,7 @@ declare global {
       devUpdate: Partial<dev>;
       devInfo: { preferredOS: OS; developerSince: Date };
       devUpdateInfo: Partial<devInfo>;
+      proj: iProjRequest;
     }
   }
 }

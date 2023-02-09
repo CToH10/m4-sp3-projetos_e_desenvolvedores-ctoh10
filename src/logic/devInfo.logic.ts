@@ -62,12 +62,11 @@ export const updateDevInfo = async (
           developers_infos di
       SET
           (%I) = ROW(%L)
-
       FROM
           developers devs
       WHERE 
       devs."id" = $1 AND di."id" = devs."developers_infoID"
-      RETURNING *;
+      RETURNING di."id", di."developerSince", di."preferredOS";
   `;
 
   const queryFormat: string = format(queryTemp, devInfoKeys, devInfoValues);

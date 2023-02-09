@@ -73,6 +73,11 @@ export const checkProjDev = async (
   next: NextFunction
 ): Promise<Response | void> => {
   const id: number = parseInt(request.body.developerId);
+  if (!id) {
+    return response
+      .status(400)
+      .json({ message: "Inform dev responsible for project" });
+  }
   const queryString: string = `
     SELECT
         *

@@ -48,7 +48,7 @@ app.use(express.json());
 
 app.post("/developers", checkDeveloperKeys, emailAlreadyInUse, createDeveloper);
 app.post(
-  "/developers/:id",
+  "/developers/:id/infos",
   checkDevExists,
   checkDevHasInfo,
   checkInfoKeys,

@@ -22,7 +22,7 @@ export const checkUpdateDevKeys = (
 
   if (!name && !email) {
     return response.status(400).json({
-      message: `At least one of those keys must be send.`,
+      message: `At least one of those keys must be sent.`,
       keys: ["name", "email"],
     });
   }

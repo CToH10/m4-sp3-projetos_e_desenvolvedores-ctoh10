@@ -47,12 +47,6 @@ ADD "developers_infoID" INTEGER UNIQUE DEFAULT NULL;
 ALTER TABLE developers
 ADD FOREIGN KEY ("developers_infoID" ) REFERENCES developers_infos("id") ON DELETE SET NULL;
 
-ALTER TABLE developers_infos
-ADD "devID" INTEGER UNIQUE NOT NULL; 
-
-ALTER TABLE developers_infos
-ADD FOREIGN KEY ("devID" ) REFERENCES developers("id") ON DELETE CASCADE;
-
 ALTER TABLE projects
 ADD "developerId" INTEGER NOT NULL;
 

@@ -24,6 +24,7 @@ import {
 import {
   checkProjDev,
   checkProjKeys,
+  checkTechKeys,
 } from "./middlewares/postProject.middlewares";
 import {
   checkProjExists,
@@ -69,6 +70,7 @@ app.patch(
 app.delete("/developers/:id", checkDevExists, deleteDev);
 
 app.post("/projects", checkProjDev, checkProjKeys, createProject);
+app.post("/projects/:id/technologies", checkProjExists, checkTechKeys);
 app.get("/projects", listAllProjs);
 app.get("/projects/:id", listAProj);
 app.patch("/projects/:id", checkProjExists, checkUpdateProjKeys, updateProject);

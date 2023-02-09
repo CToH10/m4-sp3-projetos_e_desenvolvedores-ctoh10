@@ -18,6 +18,13 @@ export type iRequiredProjKeys =
   | "startDate"
   | "developerId";
 
+export interface iTech {
+  name: string;
+  id: number;
+}
+
 export type iPossibleProjKeys = iRequiredProjKeys | "endDate";
 
 export type ProjResult = QueryResult<iProjRequest>;
+
+export type TechResult = QueryResult<iTech>;

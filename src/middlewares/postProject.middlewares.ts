@@ -2,7 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import { QueryConfig } from "pg";
 import { client } from "../database";
 import { iDevResult } from "../interfaces/developer.interfaces";
-import { iRequiredProjKeys } from "../interfaces/projects.interfaces";
+import {
+  iRequiredProjKeys,
+  iTech,
+  ProjResult,
+  TechResult,
+} from "../interfaces/projects.interfaces";
 
 export const checkProjKeys = (
   request: Request,
@@ -86,6 +91,54 @@ export const checkProjDev = async (
   if (queryResult.rowCount === 0) {
     return response.status(404).json({ message: `Developer not found` });
   }
+
+  return next();
+};
+
+export const checkTechKeys = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  const techName: string = request.body.name;
+  const queryString: string = `
+    SELECT
+        *
+    FROM
+        technologies
+    WHERE
+        name=$1;`;
+
+  const queryConfig: QueryConfig = {
+    text: queryString,
+    values: [techName],
+  };
+
+  const queryResult: TechResult = await client.query(queryConfig);
+
+  const techString: string = `
+    SELECT
+        name
+    FROM
+        technologies;`;
+
+  const techResult: TechResult = await await client.query(techString);
+
+  const techOptions = techResult.rows.map((tech) => {
+    return tech.name;
+  });
+
+  if (queryResult.rowCount === 0) {
+    return response.status(404).json({
+      message: `Technology not supported not found`,
+      options: techOptions,
+    });
+  }
+
+  request.tech = {
+    name: techName,
+    id: queryResult.rows[0].id,
+  };
 
   return next();
 };

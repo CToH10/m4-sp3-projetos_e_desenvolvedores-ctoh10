@@ -22,6 +22,7 @@ import {
   checkUpdateInfoKeys,
 } from "./middlewares/patchDev.middlewares";
 import {
+  checkProjAlreadyHasTech,
   checkProjDev,
   checkProjKeys,
   checkTechKeys,
@@ -30,10 +31,12 @@ import {
   checkProjExists,
   checkUpdateProjKeys,
 } from "./middlewares/patchProject.middlewares";
+import { confirmProjTech } from "./middlewares/deleteProject.middlewares";
 import {
   addTech,
   createProject,
   deleteProj,
+  deleteTech,
   listAllProjs,
   listAProj,
   updateProject,
@@ -71,10 +74,23 @@ app.patch(
 app.delete("/developers/:id", checkDevExists, deleteDev);
 
 app.post("/projects", checkProjDev, checkProjKeys, createProject);
-app.post("/projects/:id/technologies", checkProjExists, checkTechKeys, addTech);
+app.post(
+  "/projects/:id/technologies",
+  checkProjExists,
+  checkTechKeys,
+  checkProjAlreadyHasTech,
+  addTech
+);
 app.get("/projects", listAllProjs);
 app.get("/projects/:id", listAProj);
 app.patch("/projects/:id", checkProjExists, checkUpdateProjKeys, updateProject);
+app.delete(
+  "/projects/:id/technologies/:name",
+  checkProjExists,
+  checkTechKeys,
+  confirmProjTech,
+  deleteTech
+);
 app.delete("/projects/:id", checkProjExists, deleteProj);
 
 const port: number = 3000;

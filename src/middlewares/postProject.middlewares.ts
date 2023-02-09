@@ -100,7 +100,11 @@ export const checkTechKeys = async (
   response: Response,
   next: NextFunction
 ): Promise<Response | void> => {
-  const techName: string = request.body.name;
+  const techName: string = request.body.name || request.params.name;
+
+  if (!techName) {
+    return response.status(400).json({ message: "Provide name" });
+  }
   const queryString: string = `
     SELECT
         *
@@ -130,7 +134,7 @@ export const checkTechKeys = async (
 
   if (queryResult.rowCount === 0) {
     return response.status(404).json({
-      message: `Technology not supported not found`,
+      message: `Technology not supported`,
       options: techOptions,
     });
   }
@@ -140,5 +144,40 @@ export const checkTechKeys = async (
     id: queryResult.rows[0].id,
   };
 
+  return next();
+};
+
+export const checkProjAlreadyHasTech = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+): Promise<Response | void> => {
+  const { id } = request.tech;
+  const projID: string = request.params.id;
+  const queryString: string = `
+  SELECT
+      "techID"
+  FROM
+      projects_technologies pt
+  WHERE
+    pt."techID" = $1 AND pt."projectID" = $2 ;`;
+
+  const queryConfig: QueryConfig = {
+    text: queryString,
+    values: [id, projID],
+  };
+  const techResult: TechResult = await client.query(queryConfig);
+
+  if (techResult.rowCount !== 0 && request.method === "POST") {
+    return response.status(409).json({
+      message: `Project already has ${request.tech.name} registered`,
+    });
+  }
+
+  if (techResult.rowCount === 0 && request.method === "PATCH") {
+    return response.status(400).json({
+      message: `Project has no ${request.tech.name} registered`,
+    });
+  }
   return next();
 };

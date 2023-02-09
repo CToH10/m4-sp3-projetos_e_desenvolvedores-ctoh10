@@ -172,3 +172,25 @@ export const addTech = async (
 
   return response.status(201).json(queryResult.rows[0]);
 };
+
+export const deleteTech = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const { id } = request.tech;
+  const projID: number = parseInt(request.params.id);
+
+  const queryString: string = `
+    DELETE FROM
+      projects_technologies pt
+    WHERE
+      pt."techID" = $1 AND pt."projectID" = $2;`;
+
+  const queryConfig: QueryConfig = {
+    text: queryString,
+    values: [id, projID],
+  };
+
+  await client.query(queryConfig);
+  return response.status(204).json();
+};

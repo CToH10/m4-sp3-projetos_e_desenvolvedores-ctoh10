@@ -13,7 +13,7 @@ export const createDevInfo = async (
   response: Response
 ): Promise<Response> => {
   const id: number = parseInt(request.params.id);
-  const devInfoRequest: iDevInfoRequest = { ...request.devInfo, devID: id };
+  const devInfoRequest: iDevInfoRequest = { ...request.devInfo };
 
   const queryString: string = format(
     `
@@ -52,22 +52,24 @@ export const updateDevInfo = async (
   request: Request,
   response: Response
 ): Promise<Response> => {
-  const id: number = parseInt(request.params.id);
   const devInfoKeys = Object.keys(request.devUpdateInfo);
   const devInfoValues = Object.values(request.devUpdateInfo);
 
   const queryTemp: string = `
       UPDATE
-          developers_infos
+          developers_infos di
       SET
           (%I) = ROW(%L)
+
+      FROM
+          developers devs
       WHERE 
-      developers_infos."devID" = $1
+      di."id" = devs."developers_infoID"
       RETURNING *;
   `;
 
   const queryFormat: string = format(queryTemp, devInfoKeys, devInfoValues);
-  const queryConfig: QueryConfig = { text: queryFormat, values: [id] };
+  const queryConfig: QueryConfig = { text: queryFormat };
   const updateDevInfo: iDevInfoResult = await client.query(queryConfig);
 
   return response.status(201).json(updateDevInfo.rows[0]);

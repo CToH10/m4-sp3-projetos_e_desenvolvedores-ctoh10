@@ -25,12 +25,12 @@ CREATE TABLE IF NOT EXISTS projects(
 );
 
 CREATE TABLE IF NOT EXISTS technologies(
-    "id" SERIAL,
+    "id" SERIAL PRIMARY KEY,
     "name" VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS projects_technologies(
-    "id" SERIAL,
+    "id" SERIAL PRIMARY KEY,
     "addedIn" DATE NOT NULL DEFAULT NOW()
 );
 
@@ -63,4 +63,4 @@ ALTER TABLE projects_technologies
 ADD "techID" INTEGER NOT NULL;
 
 ALTER TABLE projects_technologies
-ADD FOREIGN KEY ("techID" ) REFERENCES projects("id") ON DELETE CASCADE;
+ADD FOREIGN KEY ("techID" ) REFERENCES technologies("id") ON DELETE CASCADE;

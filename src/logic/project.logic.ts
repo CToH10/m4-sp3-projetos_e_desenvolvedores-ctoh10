@@ -129,3 +129,46 @@ export const deleteProj = async (
 
   return response.status(204).json();
 };
+
+export const addTech = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const { id } = request.tech;
+  const projId: number = parseInt(request.params.id);
+
+  const techString: string = format(
+    `
+    INSERT INTO
+      projects_technologies(%I)
+    VALUES
+      (%L);
+  `,
+    ["techID", "projectID"],
+    [id, projId]
+  );
+
+  await client.query(techString);
+
+  const queryString: string = `
+    SELECT 
+        pj."id" AS "projectID", pj."name" AS "projectName", pj."description" AS "projectDescription", pj."estimatedTime" AS "projectEstimatedTime", pj."repository" AS "projectRepository", pj."startDate" AS "projectStartDate", pj."endDate" AS "projectEndDate", pj."developerId" AS "projectDeveloperID", tech."id" AS "technologyID", tech."name" AS "technologyName"
+    FROM 
+        projects pj
+    LEFT JOIN
+        projects_technologies pt
+    ON 
+        pt."projectID" = pj."id"
+    LEFT JOIN
+        technologies tech
+    ON
+        pt."techID" = tech."id"
+    WHERE
+        pt."projectID" = $1 AND pt."techID" = $2;`;
+
+  const queryConfig: QueryConfig = { text: queryString, values: [projId, id] };
+
+  const queryResult = await client.query(queryConfig);
+
+  return response.status(201).json(queryResult.rows[0]);
+};

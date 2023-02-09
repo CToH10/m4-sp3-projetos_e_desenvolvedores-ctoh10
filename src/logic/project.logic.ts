@@ -79,7 +79,7 @@ export const listAProj = async (
       message: "No projects found",
     });
   }
-  return response.json(queryResult.rows);
+  return response.json(queryResult.rows[0]);
 };
 
 export const updateProject = async (

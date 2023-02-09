@@ -55,6 +55,8 @@ export const updateDevInfo = async (
   const devInfoKeys = Object.keys(request.devUpdateInfo);
   const devInfoValues = Object.values(request.devUpdateInfo);
 
+  const { id } = request.params;
+
   const queryTemp: string = `
       UPDATE
           developers_infos di
@@ -64,12 +66,12 @@ export const updateDevInfo = async (
       FROM
           developers devs
       WHERE 
-      di."id" = devs."developers_infoID"
+      di."id" = devs."developers_infoID" AND di."id" = $1
       RETURNING *;
   `;
 
   const queryFormat: string = format(queryTemp, devInfoKeys, devInfoValues);
-  const queryConfig: QueryConfig = { text: queryFormat };
+  const queryConfig: QueryConfig = { text: queryFormat, values: [id] };
   const updateDevInfo: iDevInfoResult = await client.query(queryConfig);
 
   return response.status(201).json(updateDevInfo.rows[0]);

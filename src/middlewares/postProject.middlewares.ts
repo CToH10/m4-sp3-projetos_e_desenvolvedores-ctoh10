@@ -133,7 +133,7 @@ export const checkTechKeys = async (
   });
 
   if (queryResult.rowCount === 0) {
-    return response.status(404).json({
+    return response.status(400).json({
       message: `Technology not supported`,
       options: techOptions,
     });

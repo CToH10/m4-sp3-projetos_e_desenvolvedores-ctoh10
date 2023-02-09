@@ -66,7 +66,7 @@ export const updateDevInfo = async (
       FROM
           developers devs
       WHERE 
-      di."id" = devs."developers_infoID" AND di."id" = $1
+      devs."id" = $1 AND di."id" = devs."developers_infoID"
       RETURNING *;
   `;
 
@@ -74,5 +74,5 @@ export const updateDevInfo = async (
   const queryConfig: QueryConfig = { text: queryFormat, values: [id] };
   const updateDevInfo: iDevInfoResult = await client.query(queryConfig);
 
-  return response.status(201).json(updateDevInfo.rows[0]);
+  return response.json(updateDevInfo.rows[0]);
 };

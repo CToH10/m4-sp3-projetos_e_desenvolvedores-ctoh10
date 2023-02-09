@@ -68,7 +68,7 @@ export const listAProj = async (
     ON
         pt."techID" = tech."id"
     WHERE
-        pt."id" = $1;`;
+        pj."id" = $1;`;
 
   const queryConfig: QueryConfig = { text: queryString, values: [id] };
 
@@ -79,7 +79,7 @@ export const listAProj = async (
       message: "No projects found",
     });
   }
-  return response.json(queryResult.rows[0]);
+  return response.json(queryResult.rows);
 };
 
 export const updateProject = async (

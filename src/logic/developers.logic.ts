@@ -176,7 +176,7 @@ export const listDevProjects = async (
     LEFT JOIN
         projects_technologies pt
     ON 
-        pt."projectID" = devs."id"
+        pt."projectID" = pj."id"
     LEFT JOIN
         technologies tech
     ON
@@ -194,8 +194,5 @@ export const listDevProjects = async (
     await client.query(queryConfig)
   ).rows;
 
-  if (queryResult === undefined) {
-    return response.status(404).json({ message: "Developer not found" });
-  }
   return response.json(queryResult);
 };

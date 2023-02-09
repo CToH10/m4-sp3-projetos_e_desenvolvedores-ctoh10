@@ -56,7 +56,7 @@ app.post(
 );
 app.get("/developers", listAllDevs);
 app.get("/developers/:id", listDev);
-app.get("/developers/:id/projects", listDevProjects);
+app.get("/developers/:id/projects", checkDevExists, listDevProjects);
 app.patch(
   "/developers/:id",
   checkDevExists,

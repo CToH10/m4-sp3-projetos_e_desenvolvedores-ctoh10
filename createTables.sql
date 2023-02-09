@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS technologies(
 
 CREATE TABLE IF NOT EXISTS projects_technologies(
     "id" SERIAL PRIMARY KEY,
-    "addedIn" DATE NOT NULL DEFAULT NOW()
+    "addedIn" DATE DEFAULT NOW()
 );
 
 

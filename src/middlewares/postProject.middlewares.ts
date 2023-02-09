@@ -41,7 +41,7 @@ export const checkProjKeys = (
 
   if (!allRequired) {
     return response
-      .status(409)
+      .status(400)
       .json({ message: `Required keys are: ${joinedKeys}` });
   }
 

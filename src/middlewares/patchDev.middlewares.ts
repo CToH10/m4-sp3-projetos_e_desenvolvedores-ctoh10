@@ -61,7 +61,7 @@ export const checkUpdateInfoKeys = (
 
   if (!preferred && preferredOS) {
     return response.status(400).json({
-      message: "Invalid OS option.",
+      message: "Invalid OS option; case sensitive, check spelling",
       options: preferences,
     });
   }

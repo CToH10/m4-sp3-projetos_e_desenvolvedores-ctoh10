@@ -79,7 +79,7 @@ export const checkInfoKeys = (
     "developerSince",
     "preferredOS",
   ];
-  const preferences: OS[] = ["Linux", "MacOS", "Windows"];
+  const preferences: OS[] = ["Windows", "Linux", "MacOS"];
 
   const allRequired: boolean = requiredKeys.every((key: string) => {
     return infoKeys.includes(key as iDevInfoRequiredKeys);
@@ -98,7 +98,8 @@ export const checkInfoKeys = (
 
   if (!preferred) {
     return response.status(400).json({
-      message: `Preferred OS values are: ${joinedPreference}; case sensitive, check spelling`,
+      message: "Invalid OS option.",
+      options: preferences,
     });
   }
 
